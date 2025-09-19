@@ -13,7 +13,7 @@ const bird = {
     width: 20,                        //<-- bird variable
     height: 20,
     velocity: 0,
-    gravity: 0.2
+    gravity: 0.2             
 }; 
 
 function draw() {
@@ -29,7 +29,7 @@ function update() {
     
     bird.velocity += bird.gravity;
 
-    bird.y += bird.velocity;
+    bird.y += bird.velocity;                                         //<-- move bird in y axis 
 
     if (bird.y + bird.height > canvas.height) {
         bird.y = canvas.height - bird.height;
@@ -59,8 +59,77 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+
+
+
+
+
+const pipes = [];
+const pipeWidth = 45;
+const pipeGap = 120;                                //<-- pipes variable
+const pipeSpeed = 2; 
+let frame = 0; 
+
+
+function createPipe() {
+    const minHeight =   50;
+    const maxHeight = canvas.height - pipeGap - minHeight;
+    const topPipeHeight = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+    const bottomPipeHeight = canvas.height - topPipeHeight - pipeGap;
+
+    pipes.push({
+        x: canvas.width,
+        topHeight: topPipeHeight,
+        bottomHeight: bottomPipeHeight,
+        passed: false                     // <-- To track if the bird has passed this pipe for scoring
+    });
+}
+
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white';                              //<-- updated bird 
+    ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+
+    
+    ctx.fillStyle = 'green';                            //<-- draw pipe color green 
+    pipes.forEach(pipe => {
+        ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
+        ctx.fillRect(pipe.x, canvas.height - pipe.bottomHeight, pipeWidth, pipe.bottomHeight);
+    });
+}
+
+function update() {
+    bird.velocity += bird.gravity;
+    bird.y += bird.velocity;
+    if (bird.y + bird.height > canvas.height) {
+        bird.y = canvas.height - bird.height;
+        bird.velocity = 0;
+    }
+    if (bird.y < 0) {
+        bird.y = 0;
+        bird.velocity = 0;
+    }
+
+    pipes.forEach(pipe => {
+        pipe.x -= pipeSpeed;
+    });
+
+
+    if (frame % 200 === 0) { //<-- Creates a new pipe every 200 frames
+        createPipe();
+    }
+    frame++;
+    if (pipes.length > 0 && pipes[0].x < -pipeWidth) {     //<-- Remove pipes that have gone off-screen
+
+        pipes.shift();
+    }
+}
+
+
 gameLoop();
 
-// Draw a simple rectangle to test
-ctx.fillStyle = 'red';
-ctx.fillRect(100, 100, 50, 50); 
+
+// ctx.fillStyle = 'red';
+// ctx.fillRect(100, 100, 50, 50);              //<-- draw a simple rectangle for a test
+
