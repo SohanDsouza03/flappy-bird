@@ -16,63 +16,15 @@ const bird = {
     gravity: 0.2             
 }; 
 
-function draw() {
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);  //<-- clear canvas in each frame
-
-    
-    ctx.fillStyle = 'red';                                   
-    ctx.fillRect(bird.x, bird.y, bird.width, bird.height);      //<-- draw bird square
-}
-
-function update() {
-    
-    bird.velocity += bird.gravity;
-
-    bird.y += bird.velocity;                                         //<-- move bird in y axis 
-
-    if (bird.y + bird.height > canvas.height) {
-        bird.y = canvas.height - bird.height;
-        bird.velocity = 0;
-    }
-
-    if (bird.y < 0) {
-        bird.y = 0;
-        bird.velocity = 0;
-    }
-}
-
-function gameLoop() {
-    update();
-    draw();
-    requestAnimationFrame(gameLoop);
-}
-
-function jump() {
-    bird.velocity = -4; // <-- Negative velocity makes it move up
-}
-
-
-document.addEventListener('keydown', (e) => {
-    if (e.code === 'Space') {
-        jump();                                 // basically listen to spacebar command
-    }
-});
-
-
-
-
-
-
 const pipes = [];
 const pipeWidth = 45;
-const pipeGap = 120;                                //<-- pipes variable
+const pipeGap = 120;                  //<-- pipes variable
 const pipeSpeed = 2; 
 let frame = 0; 
 
 
 function createPipe() {
-    const minHeight =   50;
+    const minHeight =   50;                     //<-- pipe creation function
     const maxHeight = canvas.height - pipeGap - minHeight;
     const topPipeHeight = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
     const bottomPipeHeight = canvas.height - topPipeHeight - pipeGap;
@@ -88,7 +40,7 @@ function createPipe() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'white';                              //<-- updated bird 
+    ctx.fillStyle = 'white';                              //<-- drawing bird 
     ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 
     
@@ -125,6 +77,24 @@ function update() {
         pipes.shift();
     }
 }
+
+function gameLoop() {
+    update();       //<-- draw the game logic
+    draw();         //<-- draw a new state
+    requestAnimationFrame(gameLoop);
+}
+
+function jump() {
+    bird.velocity = -4; // <-- Negative velocity makes it move up
+}
+
+
+document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+        jump();                                 // basically listen to spacebar command
+    }
+});
+
 
 
 gameLoop();
