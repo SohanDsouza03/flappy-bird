@@ -5,7 +5,7 @@ const ctx = canvas.getContext('2d');
 
 // Set the canvas dimensions
 canvas.width = 400;
-canvas.height = 600;
+canvas.height = 600;                    
 
 // --- Game State Variables ---
 let score = 0;
