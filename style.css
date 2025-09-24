@@ -3,9 +3,13 @@ body {
     flex-direction: column ;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100vh;  
     margin: 0;
     font-family: Arial, sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    overflow: hidden;
+    position: relative;    
 }
 
 canvas {
@@ -18,4 +22,4 @@ canvas {
     font-size: 2em;
     font-weight: lighter;
     color: #111111;
-}===
+}
